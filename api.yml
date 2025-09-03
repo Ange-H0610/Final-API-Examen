@@ -1,17 +1,64 @@
 openapi: 3.0.3
 info:
-  title: STD24110
-  version: 1.0.0
-  servers:
+  title: "STD24110"
+  description: "This is a specification of STD24110"
+  version: "1.0.0"
+
+servers:
   - url: http://localhost:8000
+
 paths:
-  /:
+  /health:
     get:
-      summary: Root endpoint
+      summary: "Check API health"
       responses:
         '200':
-          description: This is a specification of STD24110
+          description: "Ok"
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /phones:
+    post:
+      summary: "Create list of phones"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Phone"
+      responses:
+        '201':
+          description: "Phones created successfully"
+    get:
+      summary: "Retrieve list of phones"
+      responses:
+        '200':
+          description: "List of phones"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Phone"
+
+  /phones/{id}:
+    get:
+      summary: "Get a phone by ID"
+      parameters:
+        - $ref: "#/components/parameters/PhoneId"
+      responses:
+        '200':
+          description: "Phone found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Phone"
+        '404':
+          description: "Phone not found"
 
 
-      
-
+  
